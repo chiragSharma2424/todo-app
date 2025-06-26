@@ -1,8 +1,9 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const todoModel = require('./db');
-const port = 3000;
+import express from 'express'
+import cors from 'cors'
+import todo from './db.js';
+import dotenv from 'dotenv'
+dotenv.config();
+const port = process.env.PORT;
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -11,7 +12,7 @@ let todos = [];
 
 // a get route where we can fetch our all todos;
 app.get('/todos', (req, res) => {
-    todoModel.find().then((result) => {
+    todo.find().then((result) => {
         res.json(result)
     }).catch((err) => {
         res.json(err);
@@ -22,7 +23,7 @@ app.get('/todos', (req, res) => {
 app.post('/todos', (req, res) => {
     const title = req.body.title;
     const description = req.body.description;
-    todoModel.create({
+    todo.create({
         title: title,
         description: description
     }).then((result) => {
